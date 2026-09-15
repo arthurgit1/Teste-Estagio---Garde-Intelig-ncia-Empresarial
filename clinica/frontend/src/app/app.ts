@@ -1,20 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Component, inject, OnInit, signal } from '@angular/core';
 
 import {
+  Appointment,
   AppointmentsService,
   AppointmentConfirmation,
 } from './services/appointments.service';
-
 @Component({
   selector: 'app-root',
   imports: [FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
   private readonly appointmentsService = inject(AppointmentsService);
 
   patientName = '';
@@ -27,6 +27,9 @@ export class App {
   readonly error = signal('');
   readonly notice = signal('');
   readonly confirmation = signal<AppointmentConfirmation | null>(null);
+  readonly appointments = signal<Appointment[]>([]);
+  readonly loadingAppointments = signal(false);
+  readonly appointmentsError = signal('');
 
   onDateChange(value: string): void {
     this.selectedDate = value;
@@ -88,6 +91,7 @@ export class App {
       );
 
       this.confirmation.set(result);
+      void this.loadAppointments();
 
       this.availableTimes.update((times) =>
         times.filter((time) => time !== result.appointment.time),
@@ -128,4 +132,34 @@ export class App {
 
     return 'Não foi possível concluir a operação. Tente novamente.';
   }
+
+  ngOnInit(): void {
+  void this.loadAppointments();
+}
+
+async loadAppointments(): Promise<void> {
+  if (this.loadingAppointments()) {
+    return;
+  }
+
+  this.loadingAppointments.set(true);
+  this.appointmentsError.set('');
+
+  try {
+    const result = await firstValueFrom(
+      this.appointmentsService.getAppointments(),
+    );
+
+    this.appointments.set(result.appointments);
+  } catch (error) {
+    this.appointmentsError.set(this.getErrorMessage(error));
+  } finally {
+    this.loadingAppointments.set(false);
+  }
+}
+
+formatDate(date: string): string {
+  const [year, month, day] = date.split('-');
+  return `${day}/${month}/${year}`;
+}
 }

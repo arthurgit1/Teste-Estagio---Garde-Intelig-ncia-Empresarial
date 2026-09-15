@@ -133,3 +133,55 @@ button:focus-visible {
     font-size: 20px;
   }
 }
+
+.appointments {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #dbe3ec;
+}
+
+.appointments-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+  }
+
+  button {
+    width: auto;
+    margin: 0;
+  }
+}
+
+.appointment-list {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.appointment-card {
+  padding: 18px;
+  border: 1px solid #dbe3ec;
+  border-radius: 12px;
+  background: white;
+  overflow-wrap: anywhere;
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0 0 8px;
+  }
+
+  small {
+    color: #52657a;
+  }
+}

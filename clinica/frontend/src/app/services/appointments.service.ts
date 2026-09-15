@@ -24,6 +24,17 @@ export interface AppointmentConfirmation {
   };
 }
 
+export interface Appointment {
+  id: number;
+  patientName: string;
+  date: string;
+  time: string;
+}
+
+export interface AppointmentsResponse {
+  timezone: string;
+  appointments: Appointment[];
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -44,4 +55,11 @@ export class AppointmentsService {
       data,
     );
   }
+
+  getAppointments() {
+  return this.http.get<AppointmentsResponse>(
+    `${this.apiUrl}/appointments`,
+  );
 }
+}
+
