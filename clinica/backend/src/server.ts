@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import { pool } from './config/database.js';
 import { availableRouter } from './routes/available.routes.js';
+import { appointmentsRouter } from './routes/appointments.routes.js';
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(availableRouter);
+app.use(appointmentsRouter);
 
 
 app.get('/health', (_req, res) => {
