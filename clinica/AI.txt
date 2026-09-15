@@ -1,0 +1,6 @@
+Condições para a IA no projeto.
+
+- Angular CLI no Frontend
+- Node.js para Backend
+- Banco de Dados Relacional MySQL
+
